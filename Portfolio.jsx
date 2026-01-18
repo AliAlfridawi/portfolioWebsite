@@ -283,13 +283,13 @@ export default function Portfolio() {
           <div className="space-y-5">
             {portfolioData.experience.map((exp, index) => (
               <div key={index} className="p-5 rounded-lg backdrop-blur-sm border-l-4 border-l-cyan-400 transition-all hover:shadow-md bg-cyan-500 bg-opacity-10 hover:bg-opacity-20 border border-cyan-500 border-opacity-30">
-                <h3 className="font-bold text-base mb-1 text-cyan-300">
+                <h3 className="font-bold text-base mb-1 text-cyan-100">
                   {exp.role}
                 </h3>
-                <p className="text-sm font-semibold mb-3 text-cyan-200">
+                <p className="text-sm font-semibold mb-3 text-cyan-300">
                   {exp.company} • {exp.date}
                 </p>
-                <p className="text-sm leading-relaxed text-cyan-100">
+                <p className="text-sm leading-relaxed text-white">
                   {exp.description}
                 </p>
               </div>
