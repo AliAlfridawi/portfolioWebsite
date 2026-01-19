@@ -6,7 +6,7 @@ const portfolioData = {
   header: {
     name: 'Ali Alfridawi',
     title: 'Electrical Engineering Student',
-    bio: 'Young engineer passionate about photonics, signal processing, and research.',
+    bio: 'Young engineer passionate about photonics excited to participate in research and innovate in the field of electrical engineering.',
   },
   about: {
     content:
@@ -91,33 +91,33 @@ const AccordionSection = ({ title, isOpen, onToggle, icon: Icon, children }) => 
     <div className="border-b border-cyan-500 border-opacity-30 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full px-6 py-5 flex items-center justify-between hover:bg-cyan-500 hover:bg-opacity-10 transition-all duration-300 group"
+        className="w-full px-6 py-5 flex items-center justify-between hover:bg-cyan-500 hover:bg-opacity-10 transition-all duration-300"
       >
         <div className="flex items-center gap-4">
-          {Icon && <Icon className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition-transform" />}
-          <h2 className="text-lg font-bold text-cyan-50 group-hover:text-cyan-300 transition-colors">
+          {Icon && <Icon className={`w-6 h-6 text-cyan-400 hover:scale-110 transition-all duration-300 ${isOpen ? 'animate-pulse-slow' : ''}`} />}
+          <h2 className={`text-lg font-bold text-cyan-50 hover:text-cyan-300 transition-colors duration-300 ${isOpen ? 'text-cyan-200' : ''}`}>
             {title}
           </h2>
         </div>
         <ChevronDown
-          className={`w-6 h-6 text-cyan-400 transition-all duration-300 group-hover:scale-110 ${
-            isOpen ? 'rotate-180' : ''
+          className={`w-6 h-6 text-cyan-400 transition-all duration-500 hover:scale-110 ${
+            isOpen ? 'rotate-180 scale-110' : ''
           }`}
         />
       </button>
 
-      {isOpen && (
-        <div className="px-6 py-6 bg-blue-900 bg-opacity-40 border-t border-cyan-500 border-opacity-30 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-300">
+      <div className={`accordion-grid ${isOpen ? 'open' : ''}`}>
+        <div className="accordion-inner bg-blue-900 bg-opacity-40 border-t border-cyan-500 border-opacity-30 backdrop-blur-md px-6 py-6">
           {children}
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 // Main Portfolio Component
 export default function Portfolio() {
-  const [openSection, setOpenSection] = useState('about');
+  const [openSection, setOpenSection] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Show loading animation on mount
@@ -167,9 +167,35 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900">
+    <div className="relative min-h-screen overflow-hidden ocean-animated">
+      {/* Tsunami Wave at the top */}
+      <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 opacity-80">
+        <svg className="w-full h-full animate-tsunami" viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,50 Q300,10 600,50 T1200,50 L1200,100 L0,100 Z" fill="url(#waveGradient)" />
+          <defs>
+            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#0c4a6e" stopOpacity="0.3" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* Animated background elements with z-0 */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Swimming Fish - Multiple depths, speeds, sizes, and colors */}
+        {/* Fish swimming left */}
+        <div className="absolute top-1/4 text-2xl opacity-70 animate-swim-left text-cyan-300">🐟</div>
+        <div className="absolute top-2/5 text-3xl opacity-60 animate-swim-left-fast text-orange-400">🐠</div>
+        <div className="absolute top-1/2 text-xl opacity-40 animate-swim-left-slow text-cyan-200">🐟</div>
+        <div className="absolute top-2/3 text-2xl opacity-45 animate-swim-left-fast text-yellow-300">🐠</div>
+        
+        {/* Fish swimming right (with flipped orientation) */}
+        <div className="absolute top-1/3 text-2xl opacity-50 animate-swim-right-slow text-purple-400" style={{transform: 'scaleX(-1)'}}>🐠</div>
+        <div className="absolute top-3/5 text-3xl opacity-55 animate-swim-right text-green-400" style={{transform: 'scaleX(-1)'}}>🐟</div>
+        <div className="absolute top-3/4 text-xl opacity-65 animate-swim-right-fast text-pink-400" style={{transform: 'scaleX(-1)'}}>🐠</div>
+        <div className="absolute top-1/5 text-xl opacity-35 animate-swim-right text-blue-200" style={{transform: 'scaleX(-1)'}}>🐟</div>
+
         {/* Floating bubbles */}
         <Bubble size="40px" delay="0" duration="6" left="10%" bottom="20%" />
         <Bubble size="60px" delay="1" duration="8" left="80%" bottom="40%" />
@@ -177,66 +203,94 @@ export default function Portfolio() {
         <Bubble size="50px" delay="3" duration="9" left="70%" bottom="15%" />
         <Bubble size="35px" delay="0.5" duration="7.5" left="50%" bottom="50%" />
 
-        {/* Decorative fish */}
-        <div className="absolute top-32 right-20 opacity-15 animate-pulse">
-          <Fish className="w-20 h-20 text-cyan-300" />
-        </div>
-        <div className="absolute top-64 left-16 opacity-20" style={{animation: 'float 8s ease-in-out infinite'}}>
-          <Fish className="w-16 h-16 text-cyan-400" style={{transform: 'scaleX(-1)'}} />
-        </div>
 
-        {/* Decorative waves */}
-        <div className="absolute top-16 left-1/3 opacity-10 animate-pulse">
-          <Waves className="w-32 h-32 text-cyan-300" />
-        </div>
 
-        {/* Decorative shells */}
-        <div className="absolute bottom-40 right-10 opacity-15">
-          <Shell className="w-12 h-12 text-cyan-400" />
-        </div>
-        <div className="absolute bottom-32 left-20 opacity-12">
-          <Shell className="w-8 h-8 text-cyan-300" style={{transform: 'rotate(45deg)'}} />
-        </div>
+        {/* Seaweed along the bottom */}
+        {/* Left side seaweed */}
+        <Seaweed className="absolute bottom-0 left-0 w-24 h-64 text-green-500 opacity-35 animate-seaweed-wave" />
+        <Seaweed className="absolute bottom-0 left-12 w-20 h-72 text-green-500 opacity-30 animate-seaweed-wave" style={{animationDelay: '0.5s'}} />
+        <Seaweed className="absolute bottom-0 left-24 w-16 h-56 text-green-400 opacity-25 animate-seaweed-wave" style={{animationDelay: '1s'}} />
+        
+        {/* Center seaweed */}
+        <Seaweed className="absolute bottom-0 left-1/3 w-20 h-64 text-green-500 opacity-30 animate-seaweed-wave" style={{animationDelay: '0.8s'}} />
+        <Seaweed className="absolute bottom-0 left-1/2 w-24 h-72 text-green-500 opacity-35 animate-seaweed-wave" style={{animationDelay: '0.3s', transform: 'translateX(-50%)'}} />
+        <Seaweed className="absolute bottom-0 right-1/3 w-20 h-60 text-green-500 opacity-30 animate-seaweed-wave" style={{animationDelay: '1.2s'}} />
+        
+        {/* Right side seaweed */}
+        <Seaweed className="absolute bottom-0 right-24 w-16 h-56 text-green-400 opacity-25 animate-seaweed-wave" style={{animationDelay: '0.6s'}} />
+        <Seaweed className="absolute bottom-0 right-12 w-20 h-68 text-green-500 opacity-30 animate-seaweed-wave" style={{animationDelay: '1.4s'}} />
+        <Seaweed className="absolute bottom-0 right-0 w-24 h-64 text-green-500 opacity-35 animate-seaweed-wave" style={{transform: 'scaleX(-1)'}} />
 
-        {/* Seaweed left side */}
-        <Seaweed className="absolute bottom-0 left-0 w-32 h-80 text-cyan-400 opacity-20" />
-
-        {/* Seaweed right side */}
-        <Seaweed className="absolute bottom-0 right-0 w-32 h-80 text-cyan-400 opacity-20" style={{transform: 'scaleX(-1)'}} />
+        {/* Red Crabs at the bottom */}
+        <div className="absolute bottom-8 left-1/4 text-4xl opacity-60 animate-crab-shuffle">🦀</div>
+        <div className="absolute bottom-12 left-1/3 text-3xl opacity-50 animate-crab-shuffle" style={{animationDelay: '0.5s'}}>🦀</div>
+        <div className="absolute bottom-6 right-1/4 text-4xl opacity-55 animate-crab-shuffle" style={{animationDelay: '1s'}}>🦀</div>
+        <div className="absolute bottom-10 right-1/3 text-3xl opacity-45 animate-crab-shuffle" style={{animationDelay: '1.5s'}}>🦀</div>
+        <div className="absolute bottom-4 left-1/2 text-2xl opacity-40 animate-crab-shuffle" style={{transform: 'translateX(-50%)', animationDelay: '2s'}}>🦀</div>
       </div>
 
       {/* Main content - z-10 */}
       <div className="relative z-10">
         {/* Header */}
         <header className="backdrop-blur-sm bg-blue-950 bg-opacity-50 border-b border-cyan-500 border-opacity-30 shadow-lg">
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="text-2xl text-cyan-400">
-                <svg className="w-8 h-8" viewBox="0 0 100 100" fill="currentColor">
+          <div className="max-w-4xl mx-auto px-4 py-12">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="text-3xl text-cyan-400 animate-pulse-slow">
+                <svg className="w-12 h-12" viewBox="0 0 100 100" fill="currentColor">
                   <ellipse cx="50" cy="50" rx="30" ry="18" />
                   <circle cx="65" cy="45" r="8" fill="white" opacity="0.8" />
                   <circle cx="67" cy="45" r="5" />
                   <path d="M75 45 L90 40 L85 50 Z" />
                 </svg>
               </div>
-              <h1 className="text-4xl font-bold text-cyan-50">
-                {portfolioData.header.name}
-              </h1>
+              <div>
+                <h1 className="text-5xl font-bold text-cyan-50 mb-1">
+                  {portfolioData.header.name}
+                </h1>
+                <p className="text-xl font-semibold text-cyan-300">
+                  {portfolioData.header.title}
+                </p>
+              </div>
+              <div className="ml-auto flex flex-col gap-2">
+                <div className="px-3 py-1 rounded-full bg-cyan-500 bg-opacity-20 border border-cyan-500 border-opacity-50 text-xs font-semibold text-cyan-300">
+                  🎓 UTA Freshman
+                </div>
+                <div className="px-3 py-1 rounded-full bg-blue-500 bg-opacity-20 border border-blue-500 border-opacity-50 text-xs font-semibold text-blue-300">
+                  🔬 Research
+                </div>
+              </div>
             </div>
-            <p className="text-xl font-semibold ml-11 text-cyan-300">
-              {portfolioData.header.title}
-            </p>
+            <div className="ml-16 flex gap-3 text-xs">
+              <span className="text-cyan-300">📍 Based in Texas</span>
+              <span className="text-blue-300">⚡ Passionate about Innovation</span>
+            </div>
           </div>
         </header>
 
         {/* Bio Section */}
         <section className="backdrop-blur-sm bg-blue-950 bg-opacity-30 border-b border-cyan-500 border-opacity-30 shadow-md">
-          <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto px-4 py-10">
             <div className="flex items-start gap-4">
               <CoralIcon className="w-12 h-12 flex-shrink-0 text-cyan-400" />
-              <p className="text-lg leading-relaxed text-cyan-50">
-                {portfolioData.header.bio}
-              </p>
+              <div className="flex-1">
+                <p className="text-lg leading-relaxed text-cyan-50 mb-4">
+                  {portfolioData.header.bio}
+                </p>
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  <div className="p-3 rounded-lg bg-cyan-500 bg-opacity-10 border border-cyan-500 border-opacity-30 hover:bg-opacity-20 transition-all">
+                    <div className="text-sm font-bold text-cyan-300 mb-1">Hobbies</div>
+                    <div className="text-xs text-cyan-100">Card Games and Working Out</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-blue-500 bg-opacity-10 border border-blue-500 border-opacity-30 hover:bg-opacity-20 transition-all">
+                    <div className="text-sm font-bold text-blue-300 mb-1">Focus</div>
+                    <div className="text-xs text-blue-100">Photonics & Electronics</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-purple-500 bg-opacity-10 border border-purple-500 border-opacity-30 hover:bg-opacity-20 transition-all">
+                    <div className="text-sm font-bold text-purple-300 mb-1">Interest</div>
+                    <div className="text-xs text-purple-100">Competitive Programming and Math</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
