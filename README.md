@@ -8,7 +8,7 @@
 - **Lucide React** - Beautiful SVG icons (Fish, Waves, Shell, etc.)
 - **JavaScript (ES6+)** - Modern JavaScript features
 
-## 📦 Installation
+## 📦 Installation and Running
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -34,29 +34,6 @@
 4. **Open in browser**
    - The app will automatically open at `http://localhost:3000`
    - Or manually navigate to `http://localhost:3000`
-
-## 🚀 Running the Project
-
-### Development Mode
-```bash
-npm run dev
-```
-- Starts the Vite development server
-- Hot Module Replacement (HMR) enabled - changes reflect instantly
-- Server runs on `http://localhost:3000`
-
-### Build for Production
-```bash
-npm run build
-```
-- Creates optimized production build in the `dist/` folder
-- Minified and optimized code ready for deployment
-
-### Preview Production Build
-```bash
-npm run preview
-```
-- Preview the production build locally before deploying
 
 ## 📁 Project Structure
 
