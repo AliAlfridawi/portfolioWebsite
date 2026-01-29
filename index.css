@@ -100,6 +100,20 @@ p {
   z-index: -2;
 }
 
+.schematic-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(59, 130, 246, 0.03) 0%,
+    rgba(249, 115, 22, 0.02) 50%,
+    rgba(34, 197, 94, 0.03) 100%
+  );
+  animation: shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
 /* ===== SCHEMATIC CARD STYLES ===== */
 .card-schematic {
   background: var(--color-bg-card);
@@ -221,6 +235,83 @@ p {
 .hover-glitch:hover {
   animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
   color: var(--color-accent-primary);
+}
+
+/* ===== FLOATING PARTICLES ANIMATIONS ===== */
+@keyframes float-particle {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.3;
+    box-shadow: 0 0 10px currentColor;
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 25px currentColor;
+  }
+}
+
+@keyframes matrix-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(100vh + 100px));
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-float-particle {
+  animation: float-particle 12s linear infinite;
+  position: fixed;
+  pointer-events: none;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-matrix-fall {
+  animation: matrix-fall 15s linear infinite;
+  position: fixed;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.animate-shimmer {
+  animation: shimmer 4s ease-in-out infinite;
 }
 
 /* ===== TERMINAL WINDOW STYLE ===== */

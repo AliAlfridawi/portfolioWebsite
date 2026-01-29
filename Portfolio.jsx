@@ -99,6 +99,42 @@ const TypingEffect = ({ text, speed = 30, className = "" }) => {
   );
 };
 
+// Floating Particle Component
+const FloatingParticle = ({ color, size, delay, duration, left }) => {
+  return (
+    <div
+      className={`animate-float-particle ${color}`}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        borderRadius: '50%',
+        left: `${left}%`,
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+        boxShadow: `0 0 ${size / 2}px currentColor`,
+      }}
+    />
+  );
+};
+
+// Matrix-style Text Component
+const MatrixText = ({ char, delay, duration, left, top, color }) => {
+  return (
+    <div
+      className={`animate-matrix-fall ${color}`}
+      style={{
+        left: `${left}%`,
+        top: `${top}px`,
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+        color: color === 'text-blue-400' ? '#3b82f6' : color === 'text-orange-500' ? '#f97316' : '#22c55e',
+      }}
+    >
+      {char}
+    </div>
+  );
+};
+
 // Circuit Trace Component
 const CircuitTrace = ({ className, style }) => (
   <svg className={`absolute pointer-events-none ${className}`} style={style} viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -267,6 +303,28 @@ export default function Portfolio() {
     <div className="relative min-h-screen text-slate-300 overflow-x-hidden font-sans">
       {/* Global Grid Background */}
       <div className="schematic-grid" style={{ transform: `translateY(${scrollY * 0.1}px)` }}></div>
+      
+      {/* Floating Particles */}
+      <FloatingParticle color="text-blue-400" size={6} delay={0} duration={12} left={10} />
+      <FloatingParticle color="text-orange-500" size={4} delay={2} duration={14} left={20} />
+      <FloatingParticle color="text-green-500" size={5} delay={4} duration={13} left={30} />
+      <FloatingParticle color="text-purple-500" size={4} delay={1} duration={15} left={40} />
+      <FloatingParticle color="text-cyan-400" size={6} delay={3} duration={12} left={50} />
+      <FloatingParticle color="text-blue-400" size={5} delay={5} duration={14} left={60} />
+      <FloatingParticle color="text-pink-500" size={4} delay={2} duration={13} left={70} />
+      <FloatingParticle color="text-green-500" size={6} delay={0} duration={15} left={80} />
+      <FloatingParticle color="text-orange-500" size={5} delay={4} duration={12} left={90} />
+      
+      {/* Matrix-style Characters */}
+      <MatrixText char="&lt;" delay={0} duration={15} left={5} top={100} color="text-blue-400" />
+      <MatrixText char="&gt;" delay={2} duration={15} left={15} top={200} color="text-orange-500" />
+      <MatrixText char="/" delay={4} duration={15} left={25} top={300} color="text-green-500" />
+      <MatrixText char="0" delay={1} duration={15} left={35} top={150} color="text-cyan-400" />
+      <MatrixText char="1" delay={3} duration={15} left={45} top={250} color="text-purple-500" />
+      <MatrixText char="&lt;" delay={5} duration={15} left={55} top={350} color="text-pink-500" />
+      <MatrixText char="=" delay={2} duration={15} left={65} top={100} color="text-blue-400" />
+      <MatrixText char="&gt;" delay={4} duration={15} left={75} top={200} color="text-orange-500" />
+      <MatrixText char="/" delay={1} duration={15} left={85} top={300} color="text-green-500" />
       
       <Taskbar sectionRefs={sectionRefs.current} />
 
