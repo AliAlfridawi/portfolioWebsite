@@ -48,16 +48,18 @@ const portfolioData = {
   projects: [
     {
       name: 'LoudPenguin',
-      shortDescription: 'Discord bot for automated stock market reports and financial data',
-      longDescription: 'A production-grade Discord bot that delivers automated end-of-day stock market reports, tracks market indices in real-time, manages server-specific watchlists, and aggregates financial headlines. Built with TypeScript, optimized for performance, and hardened against production issues.',
-      technologies: ['TypeScript', 'Node.js', 'Discord.js', 'MongoDB', 'Mongoose', 'REST APIs'],
+      shortDescription: 'Feature-rich Discord bot for stocks, crypto, forex, and price alerts',
+      longDescription: 'A comprehensive financial tracking Discord bot that helps servers stay on top of markets with real-time data, automated reports, and penguin-themed personality. Features stock quotes, cryptocurrency tracking, forex conversion, price alerts with DM notifications, personal and server watchlists, and automated daily market summaries. Built with TypeScript and production-hardened for reliability.',
+      technologies: ['TypeScript', 'Node.js', 'Discord.js', 'MongoDB', 'Mongoose', 'Finnhub API', 'CoinGecko API'],
       githubUrl: 'https://github.com/AliAlfridawi/loudPenguin',
       features: [
+        'Real-time stock quotes, charts, and company metrics',
+        'Cryptocurrency prices and top coins by market cap',
+        'Forex currency conversion and exchange rates',
+        'Price alerts with automatic DM notifications',
+        'Personal and server watchlists (up to 25/50 stocks)',
         'Automated daily market reports at 4:15 PM ET',
-        'Real-time stock price queries with caching',
-        'Per-server watchlist management',
-        'Financial headlines aggregation',
-        'Server-specific configuration'
+        'Financial news aggregation and stock-specific headlines'
       ],
       status: 'Production Ready'
     }
