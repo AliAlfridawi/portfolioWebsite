@@ -142,6 +142,159 @@ const CircuitTrace = ({ className, style }) => (
   </svg>
 );
 
+// ===== NEW CIRCUIT SYMBOL COMPONENTS =====
+
+// Resistor Symbol (EE)
+const ResistorSymbol = ({ style, className = "" }) => (
+  <div className={`circuit-symbol animated ${className}`} style={style}>
+    <svg viewBox="0 0 100 40" fill="none" stroke="#f97316" strokeWidth="2">
+      <path d="M0,20 L20,20 L25,5 L35,35 L45,5 L55,35 L65,5 L75,35 L80,20 L100,20" />
+    </svg>
+  </div>
+);
+
+// Capacitor Symbol (EE)
+const CapacitorSymbol = ({ style, className = "" }) => (
+  <div className={`circuit-symbol animated ${className}`} style={style}>
+    <svg viewBox="0 0 60 60" fill="none" stroke="#3b82f6" strokeWidth="2">
+      <path d="M0,30 L20,30" />
+      <path d="M20,10 L20,50" />
+      <path d="M30,10 L30,50" />
+      <path d="M30,30 L50,30" />
+    </svg>
+  </div>
+);
+
+// IC Chip Symbol (CS/EE)
+const ICChipSymbol = ({ style, className = "" }) => (
+  <div className={`circuit-symbol animated ${className}`} style={style}>
+    <svg viewBox="0 0 80 100" fill="none" stroke="#f97316" strokeWidth="1.5">
+      <rect x="15" y="10" width="50" height="80" rx="2" />
+      {/* Left pins */}
+      <path d="M0,25 L15,25" />
+      <path d="M0,40 L15,40" />
+      <path d="M0,55 L15,55" />
+      <path d="M0,70 L15,70" />
+      {/* Right pins */}
+      <path d="M65,25 L80,25" />
+      <path d="M65,40 L80,40" />
+      <path d="M65,55 L80,55" />
+      <path d="M65,70 L80,70" />
+      {/* Notch */}
+      <circle cx="40" cy="18" r="4" />
+    </svg>
+  </div>
+);
+
+// AND Gate Symbol (CS/EE - Logic)
+const AndGateSymbol = ({ style, className = "" }) => (
+  <div className={`circuit-symbol animated ${className}`} style={style}>
+    <svg viewBox="0 0 80 60" fill="none" stroke="#3b82f6" strokeWidth="2">
+      <path d="M0,15 L20,15 L20,5 Q60,5 60,30 Q60,55 20,55 L20,45 L0,45" />
+      <path d="M60,30 L80,30" />
+    </svg>
+  </div>
+);
+
+// Op-Amp Symbol (EE)
+const OpAmpSymbol = ({ style, className = "" }) => (
+  <div className={`circuit-symbol animated ${className}`} style={style}>
+    <svg viewBox="0 0 80 60" fill="none" stroke="#f97316" strokeWidth="2">
+      <path d="M10,5 L10,55 L70,30 Z" />
+      <path d="M0,15 L10,15" />
+      <path d="M0,45 L10,45" />
+      <path d="M70,30 L80,30" />
+      {/* Plus/Minus symbols */}
+      <text x="15" y="20" fontSize="10" fill="#f97316" stroke="none">−</text>
+      <text x="15" y="50" fontSize="10" fill="#f97316" stroke="none">+</text>
+    </svg>
+  </div>
+);
+
+// Signal Flow Path Component
+const SignalFlowPath = ({ id, pathData, color = "orange", style }) => (
+  <svg className="signal-path" style={style} viewBox="0 0 400 200" preserveAspectRatio="none">
+    <path className="trace-glow" d={pathData} />
+    <path className={`trace-${color}`} d={pathData} style={{ animationDelay: `${id * 0.5}s` }} />
+  </svg>
+);
+
+// Data Bus Component
+const DataBus = ({ style, lines = 8 }) => (
+  <svg className="data-bus" style={style} viewBox="0 0 100 200">
+    {Array.from({ length: lines }).map((_, i) => (
+      <line
+        key={i}
+        className="data-bus-line"
+        x1="0"
+        y1={10 + i * 22}
+        x2="100"
+        y2={10 + i * 22}
+        style={{ animationDelay: `${i * 0.3}s` }}
+      />
+    ))}
+  </svg>
+);
+
+// Oscilloscope Waveform Component
+const OscilloscopeWave = ({ style, type = "sine", color = "orange" }) => {
+  const paths = {
+    sine: "M0,50 Q25,0 50,50 T100,50 T150,50 T200,50",
+    square: "M0,50 L0,10 L25,10 L25,90 L50,90 L50,10 L75,10 L75,90 L100,90 L100,10 L125,10 L125,90 L150,90 L150,10 L175,10 L175,90 L200,90",
+    triangle: "M0,50 L12.5,10 L37.5,90 L62.5,10 L87.5,90 L112.5,10 L137.5,90 L162.5,10 L187.5,90 L200,50"
+  };
+  
+  return (
+    <div className="oscilloscope-container" style={style}>
+      <svg className={`oscilloscope-wave ${color === "blue" ? "blue" : ""}`} viewBox="0 0 200 100" preserveAspectRatio="none" style={{ width: '200%' }}>
+        <path d={paths[type]} />
+      </svg>
+    </div>
+  );
+};
+
+// Via Hole Layer Component
+const ViaLayer = () => {
+  const vias = [
+    { left: 5, top: 15, size: 8, delay: 0 },
+    { left: 12, top: 45, size: 6, delay: 1, blue: true },
+    { left: 25, top: 80, size: 10, delay: 2 },
+    { left: 35, top: 25, size: 7, delay: 0.5, blue: true },
+    { left: 48, top: 60, size: 9, delay: 1.5 },
+    { left: 55, top: 10, size: 6, delay: 2.5 },
+    { left: 68, top: 35, size: 8, delay: 0.8, blue: true },
+    { left: 75, top: 75, size: 10, delay: 1.8 },
+    { left: 82, top: 50, size: 7, delay: 2.2 },
+    { left: 90, top: 20, size: 9, delay: 0.3, blue: true },
+    { left: 95, top: 85, size: 6, delay: 1.2 },
+  ];
+
+  return (
+    <div className="via-layer">
+      {vias.map((via, i) => (
+        <div
+          key={i}
+          className={`via-hole ${via.blue ? 'blue' : ''}`}
+          style={{
+            left: `${via.left}%`,
+            top: `${via.top}%`,
+            width: `${via.size}px`,
+            height: `${via.size}px`,
+            animationDelay: `${via.delay}s`
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Binary Overlay Component
+const BinaryOverlay = ({ text, style }) => (
+  <div className="binary-overlay" style={style}>
+    {text}
+  </div>
+);
+
 // PCB Divider Component
 const PCBDivider = () => (
   <div className="pcb-divider relative">
@@ -247,15 +400,20 @@ const BriefcaseIcon = () => (
 
 export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [expandedProject, setExpandedProject] = useState(null);
   const sectionRefs = useRef({});
 
-  // Loading Timer
+  // Loading Timer with fade-out transition
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
+    const timer = setTimeout(() => {
+      setIsFadingOut(true);
+      // Remove overlay from DOM after fade animation completes
+      setTimeout(() => setIsLoading(false), 500);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -287,22 +445,71 @@ export default function Portfolio() {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center font-mono">
-        <Cpu className="w-16 h-16 text-orange-500 animate-pulse mb-4" />
-        <div className="text-orange-500 text-xl tracking-widest">INITIALIZING...</div>
-        <div className="mt-2 w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
-          <div className="h-full bg-orange-500 animate-[width_2s_ease-out_forwards]" style={{ width: '100%' }}></div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative min-h-screen text-slate-300 overflow-x-hidden font-sans">
-      {/* Global Grid Background */}
-      <div className="schematic-grid" style={{ transform: `translateY(${scrollY * 0.1}px)` }}></div>
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className={`loading-overlay ${isFadingOut ? 'fade-out' : ''}`}>
+          <Cpu className="loading-chip" />
+          <div className="loading-text">INITIALIZING...</div>
+          <div className="loading-progress-container">
+            <div className="loading-progress-bar"></div>
+          </div>
+        </div>
+      )}
+
+      {/* Multi-Layer PCB Background */}
+      <div className="schematic-grid"></div>
+      
+      {/* Via Holes Layer */}
+      <ViaLayer />
+      
+      {/* Circuit Symbols - EE Theme */}
+      <ResistorSymbol style={{ top: '8%', left: '3%', width: '120px' }} />
+      <CapacitorSymbol style={{ top: '25%', right: '5%', width: '60px' }} />
+      <ICChipSymbol style={{ top: '45%', left: '2%', width: '70px' }} />
+      <OpAmpSymbol style={{ top: '65%', right: '3%', width: '80px' }} />
+      <ResistorSymbol style={{ top: '82%', left: '8%', width: '100px' }} />
+      
+      {/* Circuit Symbols - CS/Logic Theme */}
+      <AndGateSymbol style={{ top: '15%', right: '8%', width: '70px' }} />
+      <ICChipSymbol style={{ top: '55%', right: '6%', width: '60px' }} />
+      <AndGateSymbol style={{ top: '75%', left: '5%', width: '65px' }} />
+      <CapacitorSymbol style={{ top: '35%', left: '6%', width: '50px' }} />
+      
+      {/* Signal Flow Paths */}
+      <SignalFlowPath 
+        id={1} 
+        pathData="M0,100 C100,80 150,120 250,60 S350,100 400,50" 
+        color="orange" 
+        style={{ top: '10%', left: '-5%', width: '50%', height: '150px', opacity: 0.4 }} 
+      />
+      <SignalFlowPath 
+        id={2} 
+        pathData="M0,50 C80,120 160,20 240,80 S320,40 400,100" 
+        color="blue" 
+        style={{ bottom: '20%', right: '-5%', width: '45%', height: '120px', opacity: 0.4 }} 
+      />
+      <SignalFlowPath 
+        id={3} 
+        pathData="M0,80 L100,80 L120,40 L180,40 L200,100 L280,100 L300,60 L400,60" 
+        color="orange" 
+        style={{ top: '50%', left: '10%', width: '40%', height: '100px', opacity: 0.3 }} 
+      />
+      
+      {/* Data Bus */}
+      <DataBus style={{ top: '30%', right: '2%', width: '60px', height: '180px', opacity: 0.5 }} />
+      <DataBus style={{ bottom: '35%', left: '1%', width: '50px', height: '160px', opacity: 0.4 }} lines={6} />
+      
+      {/* Oscilloscope Waveforms */}
+      <OscilloscopeWave type="sine" style={{ bottom: '5%', left: '10%', width: '300px', height: '60px' }} />
+      <OscilloscopeWave type="square" color="blue" style={{ top: '5%', right: '15%', width: '250px', height: '50px' }} />
+      <OscilloscopeWave type="triangle" style={{ top: '40%', right: '10%', width: '200px', height: '40px' }} />
+      
+      {/* Binary/Hex Overlay Text */}
+      <BinaryOverlay text="0x4F 0x72 0x61 0x6E 0x67 0x65" style={{ top: '18%', left: '15%', animationDelay: '0s' }} />
+      <BinaryOverlay text="10110100 11001010 01010111" style={{ top: '42%', right: '20%', animationDelay: '5s' }} />
+      <BinaryOverlay text="0xDEADBEEF 0xCAFEBABE" style={{ bottom: '30%', left: '25%', animationDelay: '10s' }} />
       
       {/* Floating Particles */}
       <FloatingParticle color="text-blue-400" size={6} delay={0} duration={12} left={10} />

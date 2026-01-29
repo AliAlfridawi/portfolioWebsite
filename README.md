@@ -1,51 +1,92 @@
-# 🌊 Personal Portfolio
+# 🔌 Ali Alfridawi — Portfolio Website
 
-## 🛠️ Technology Stack
+A professional portfolio website showcasing my work as an Electrical Engineering student with a passion for photonics, signal processing, and computational engineering. Built with a custom "Silicon & Schematic" design theme featuring animated PCB patterns, circuit symbols, and signal flow visualizations.
 
-- **React 19** - UI component library
-- **Vite** - Fast development server and build tool
-- **Tailwind CSS v4** - Utility-first CSS framework
-- **Lucide React** - Beautiful SVG icons (Fish, Waves, Shell, etc.)
-- **JavaScript (ES6+)** - Modern JavaScript features
+---
 
-## 📦 Installation and Running
+## 👤 About Me
+
+I'm **Ali Alfridawi**, an Electrical Engineering student at the University of Texas at Arlington driven by curiosity in photonics and signal processing. Currently conducting undergraduate research in nanophotonics, developing Python-based simulation frameworks to model optical phenomena and analyze experimental data.
+
+My work bridges theory and practice—translating complex mathematical models into efficient computational tools. I'm passionate about solving engineering challenges, contributing to meaningful research, and building elegant solutions that combine hardware knowledge with software expertise.
+
+---
+
+## 📬 Contact Me
+
+- **Email:** [ama3373@mavs.uta.edu](mailto:ama3373@mavs.uta.edu)
+- **GitHub:** [github.com/AliAlfridawi](https://github.com/AliAlfridawi)
+- **LinkedIn:** [linkedin.com/in/alialfridawi](https://www.linkedin.com/in/alialfridawi/)
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technologies |
+|----------|-------------|
+| **Frontend** | React 19, Vite, Tailwind CSS v4 |
+| **Icons** | Lucide React |
+| **Language** | JavaScript (ES6+) |
+| **Fonts** | JetBrains Mono, Inter |
+
+---
+
+## 🚀 How to Run
 
 ### Prerequisites
-- Node.js (v14 or higher)
+- Node.js (v18 or higher recommended)
 - npm or yarn
 
-### Setup Steps
+### Setup
 
-1. **Clone or download the project**
-   ```bash
-   cd portfolioWebsite
-   ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/AliAlfridawi/portfolioWebsite.git
+cd portfolioWebsite
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# 2. Install dependencies
+npm install
 
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+# 3. Start the development server
+npm run dev
 
-4. **Open in browser**
-   - The app will automatically open at `http://localhost:3000`
-   - Or manually navigate to `http://localhost:3000`
+# 4. Open in browser
+# Navigate to http://localhost:3000
+```
 
-## 📁 Project Structure
+### Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 📁 Project Layout
 
 ```
 portfolioWebsite/
-├── Portfolio.jsx          # Main portfolio component
-├── main.jsx              # React entry point
-├── index.html            # HTML template
-├── index.css             # Custom CSS and animations
-├── vite.config.js        # Vite configuration
+├── index.html            # HTML entry point
+├── main.jsx              # React app entry point
+├── Portfolio.jsx         # Main portfolio component with all sections
+├── Taskbar.jsx           # Navigation sidebar component
+├── index.css             # Custom styles, animations, and theme variables
 ├── tailwind.config.js    # Tailwind CSS configuration
 ├── postcss.config.js     # PostCSS configuration
+├── vite.config.js        # Vite build configuration
 ├── package.json          # Dependencies and scripts
+├── assets/               # Static assets (icons, images)
+│   └── icon.png          # Favicon
 └── README.md             # This file
 ```
+
+### Key Features
+
+- **Multi-layer PCB background** with animated via holes and copper traces
+- **Circuit schematic symbols** (resistors, capacitors, ICs, logic gates, op-amps)
+- **Signal flow animations** representing data buses and waveforms
+- **Terminal-style header** with typing effect
+- **Section reveal animations** on scroll
+- **Responsive design** with mobile support
+
