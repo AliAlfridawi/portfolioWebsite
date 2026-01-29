@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Mail, Github, Linkedin, Fish, Waves, Shell, ArrowUp, ExternalLink} from 'lucide-react';
+import { ChevronDown, Mail, Github, Linkedin, Cpu, Terminal, Zap, ExternalLink, Grid, ArrowUp } from 'lucide-react';
+import Taskbar from './Taskbar.jsx';
 
-// Portfolio Data - Easy to edit
+// Portfolio Data
 const portfolioData = {
   header: {
     name: 'Ali Alfridawi',
@@ -10,7 +11,7 @@ const portfolioData = {
   },
   about: {
     content:
-      "I am a Freshman in Electrical Engineering at the University of Texas at Arlington, with strong interests in research, photonics, and signal processing. As I continue developing my programming skills, I'm committed to creating clear, well-structured documentation for both personal and academic projects using GitHub. I am eager to learn, collaborate, and connect with others in engineering and research communities, and I'm open to networking and new opportunities.",
+      "I'm an Electrical Engineering student at UTA driven by curiosity in photonics and signal processing. Currently conducting undergraduate research in nanophotonics, developing Python-based simulation frameworks to model optical phenomena and analyze experimental data. My work bridges theory and practice—translating complex mathematical models into efficient computational tools. I'm passionate about solving engineering challenges, contributing to meaningful research, and building elegant solutions that combine hardware knowledge with software expertise. Always eager to collaborate, learn from experienced engineers, and explore opportunities at the intersection of photonics and computational engineering.",
   },
   education: [
     {
@@ -68,109 +69,119 @@ const portfolioData = {
   },
 };
 
-// Decorative Coral Component
-const CoralIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 20 Q45 30 50 40 Q40 45 35 55 Q45 50 50 60 Q55 50 65 55 Q60 45 50 40" fill="currentColor" />
-    <path d="M50 60 Q40 70 45 85 Q50 75 50 85 Q50 75 55 85 Q60 70 50 60" fill="currentColor" />
-    <circle cx="50" cy="50" r="8" fill="currentColor" opacity="0.6" />
+// Typing Effect Component
+const TypingEffect = ({ text, speed = 30, className = "" }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  
+  useEffect(() => {
+    let index = 0;
+    setDisplayedText(""); 
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        const nextChar = text[index];
+        setDisplayedText((prev) => {
+          const result = prev + nextChar;
+          return result;
+        });
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  return (
+    <span className={className} style={{ display: 'inline-block', minWidth: '100%', whiteSpace: 'normal' }}>
+      {displayedText}
+      <span className="typing-cursor"></span>
+    </span>
+  );
+};
+
+// Circuit Trace Component
+const CircuitTrace = ({ className, style }) => (
+  <svg className={`absolute pointer-events-none ${className}`} style={style} viewBox="0 0 100 100" preserveAspectRatio="none">
+    <path className="circuit-trace animate-trace" d="M0,50 L20,50 L30,20 L50,20 L60,80 L80,80 L100,50" />
   </svg>
 );
 
-// Floating Bubble Component
-const Bubble = ({ size, delay, duration, left, bottom }) => (
-  <div
-    className="absolute rounded-full bg-cyan-300 opacity-10 pointer-events-none"
-    style={{
-      width: size,
-      height: size,
-      left: left,
-      bottom: bottom,
-      animation: `float ${duration}s ease-in-out ${delay}s infinite`,
-    }}
-  />
+// PCB Divider Component
+const PCBDivider = () => (
+  <div className="pcb-divider relative">
+    <div className="absolute top-1/2 left-0 w-full h-px bg-slate-700"></div>
+    <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-orange-500 rounded-full transform -translate-y-1/2 shadow-lg shadow-orange-500/50"></div>
+    <div className="absolute top-1/2 left-3/4 w-2 h-2 bg-orange-500 rounded-full transform -translate-y-1/2 shadow-lg shadow-orange-500/50"></div>
+  </div>
 );
 
-// Seaweed Component
-const Seaweed = ({ className }) => (
-  <svg className={className} viewBox="0 0 100 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 0 Q40 40 45 80 Q50 120 40 160 Q35 200 45 240 Q50 270 50 300" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-    <path d="M50 20 Q55 60 50 100 Q45 140 55 180 Q60 220 50 260" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
-    <circle cx="50" cy="80" r="3" fill="currentColor" opacity="0.4" />
-    <circle cx="45" cy="150" r="2" fill="currentColor" opacity="0.3" />
-    <circle cx="52" cy="220" r="3" fill="currentColor" opacity="0.4" />
-  </svg>
-);
-
-// Project Card Component
+// New Project Card Component
 const ProjectCard = ({ project, isExpanded, onToggle }) => {
   return (
-    <div className="card-enhanced overflow-hidden">
-      {/* Card Header - Clickable */}
+    <div className="card-schematic overflow-hidden mb-6">
+      {/* Card Header */}
       <button
         onClick={onToggle}
-        className="ripple-effect w-full px-8 md:px-10 py-7 md:py-8 flex items-center justify-between hover:bg-cyan-500 hover:bg-opacity-5 smooth-transition focus-visible:outline-2 focus-visible:outline-cyan-400 focus-visible:outline-offset-2"
+        className="w-full px-8 py-6 flex items-center justify-between hover:bg-slate-800/50 transition-colors focus-visible:outline-2 focus-visible:outline-orange-500"
         aria-expanded={isExpanded}
       >
         <div className="flex-1 text-left">
-          <div className="flex items-center gap-4 mb-3">
-            <h3 className="text-2xl md:text-3xl font-semibold text-cyan-50">{project.name}</h3>
-            <span className="px-3 py-1.5 rounded-full bg-teal-500 bg-opacity-15 border border-teal-500 border-opacity-30 text-xs font-medium text-teal-200">
-              {project.status}
+          <div className="flex items-center gap-4 mb-2">
+            <h3 className="text-xl md:text-2xl font-mono text-orange-500 hover-glitch">{project.name}</h3>
+            <span className="px-2 py-1 text-xs border border-blue-500/30 text-blue-400 bg-blue-500/10 font-mono">
+              STATUS::{project.status.toUpperCase()}
             </span>
           </div>
-          <p className="text-base md:text-lg text-cyan-200 text-opacity-80 mb-4">{project.shortDescription}</p>
-          <div className="flex flex-wrap gap-2.5">
+          <p className="text-slate-400 font-mono text-sm mb-3">
+            &gt; {project.shortDescription}
+          </p>
+          <div className="flex flex-wrap gap-2">
             {project.technologies.slice(0, 3).map((tech, idx) => (
-              <span key={idx} className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-cyan-500 bg-opacity-15 border border-cyan-500 border-opacity-25 text-cyan-200">
-                {tech}
+              <span key={idx} className="text-xs text-slate-500 font-mono">
+                [{tech}]
               </span>
             ))}
-            {project.technologies.length > 3 && (
-              <span className="px-3.5 py-1.5 rounded-full text-xs font-medium bg-cyan-500 bg-opacity-15 border border-cyan-500 border-opacity-25 text-cyan-200">
-                +{project.technologies.length - 3} more
-              </span>
-            )}
           </div>
         </div>
         <ChevronDown
-          className={`w-6 h-6 md:w-7 md:h-7 text-cyan-400 icon-hover smooth-transition ml-6 flex-shrink-0 ${
+          className={`w-5 h-5 text-orange-500 transition-transform duration-300 ${
             isExpanded ? 'rotate-180' : ''
           }`}
-          aria-hidden="true"
         />
       </button>
 
       {/* Expandable Content */}
       <div className={`project-expand-grid ${isExpanded ? 'open' : ''}`}>
-        <div className="project-expand-inner border-t border-cyan-500 border-opacity-15 px-8 md:px-10 py-8 md:py-10">
-          <p className="text-base md:text-lg leading-relaxed text-cyan-100 text-opacity-90 mb-8">
+        <div className="project-expand-inner border-t border-slate-700 px-8 py-8 bg-slate-900/50">
+          <div className="font-mono text-slate-300 mb-6 text-sm leading-relaxed border-l-2 border-orange-500/50 pl-4">
             {project.longDescription}
-          </p>
-          
-          <div className="mb-8">
-            <h4 className="text-xl font-semibold text-cyan-200 mb-4">Key Features</h4>
-            <ul className="space-y-3">
-              {project.features.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-base md:text-lg text-cyan-100 text-opacity-90">
-                  <span className="text-cyan-400 mt-1.5 text-lg">▹</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
           </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h4 className="text-sm font-mono text-blue-400 mb-3 uppercase tracking-wider">System Features</h4>
+              <ul className="space-y-2">
+                {project.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-sm text-slate-400 font-mono">
+                    <span className="text-orange-500 mt-1">▹</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="mb-8">
-            <h4 className="text-xl font-semibold text-cyan-200 mb-4">Technologies</h4>
-            <div className="flex flex-wrap gap-3">
-              {project.technologies.map((tech, idx) => (
-                <span
-                  key={idx}
-                  className="skill-badge px-4 py-2.5 rounded-full text-sm font-medium backdrop-blur-sm bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:from-cyan-400 hover:to-teal-400"
-                >
-                  {tech}
-                </span>
-              ))}
+            <div>
+              <h4 className="text-sm font-mono text-blue-400 mb-3 uppercase tracking-wider">Tech Stack</h4>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((tech, idx) => (
+                  <span
+                    key={idx}
+                    className="skill-badge px-3 py-1 text-xs"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -178,12 +189,11 @@ const ProjectCard = ({ project, isExpanded, onToggle }) => {
             href={project.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="ripple-effect inline-flex items-center gap-3 px-6 py-3.5 bg-cyan-500 bg-opacity-15 hover:bg-opacity-25 text-cyan-100 border border-cyan-500 border-opacity-25 hover:border-opacity-40 rounded-lg hover-lift group smooth-transition"
-            aria-label={`View ${project.name} on GitHub`}
+            className="inline-flex items-center gap-2 px-6 py-2 border border-orange-500 text-orange-400 hover:bg-orange-500/10 hover:text-orange-300 transition-all font-mono text-sm group"
           >
-            <Github className="w-5 h-5 text-cyan-300 icon-hover" />
-            <span className="font-medium">View on GitHub</span>
-            <ExternalLink className="w-4 h-4 text-cyan-300 opacity-0 group-hover:opacity-100 smooth-transition" />
+            <Github className="w-4 h-4" />
+            <span>SOURCE_CODE</span>
+            <ExternalLink className="w-3 h-3 opacity-50 group-hover:opacity-100" />
           </a>
         </div>
       </div>
@@ -191,486 +201,298 @@ const ProjectCard = ({ project, isExpanded, onToggle }) => {
   );
 };
 
-// Main Portfolio Component
+// Simple Briefcase Icon substitute for Lucide import
+const BriefcaseIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500 w-8 h-8">
+    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+  </svg>
+);
+
 export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [expandedProject, setExpandedProject] = useState(null);
-  const [depthClass, setDepthClass] = useState('depth-surface');
   const sectionRefs = useRef({});
-  const parallaxRefs = useRef({});
 
-  // Show loading animation on mount
+  // Loading Timer
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
+    const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Scroll tracking for depth effect, parallax, and back to top button
+  // Scroll Tracking
   useEffect(() => {
-    let rafId = null;
-    
     const handleScroll = () => {
-      if (rafId) return;
-      
-      rafId = requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        setScrollY(currentScrollY);
-        setShowBackToTop(currentScrollY > 400);
+      setScrollY(window.scrollY);
+      setShowBackToTop(window.scrollY > 400);
 
-        // Update scroll progress indicator
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollProgress = scrollHeight > 0 ? (currentScrollY / scrollHeight) * 100 : 0;
-        const progressBar = document.getElementById('scroll-progress');
-        if (progressBar) {
-          progressBar.style.transform = `scaleX(${scrollProgress / 100})`;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
+      const progressBar = document.getElementById('scroll-progress');
+      if (progressBar) progressBar.style.transform = `scaleX(${scrollProgress / 100})`;
+
+      // Section Reveal
+      Object.entries(sectionRefs.current).forEach(([id, element]) => {
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.75) {
+            setVisibleSections(prev => new Set(prev).add(id));
+          }
         }
-
-        // Update depth-based background
-        const newDepthClass = getDepthClass(currentScrollY, scrollHeight);
-        setDepthClass(newDepthClass);
-
-        // Parallax effects for background elements
-        Object.entries(parallaxRefs.current).forEach(([id, element]) => {
-          if (element && element.dataset.speed) {
-            const parallaxSpeed = parseFloat(element.dataset.speed) || 0.5;
-            const yPos = currentScrollY * parallaxSpeed;
-            element.style.transform = `translateY(${yPos}px)`;
-          }
-        });
-
-        // Section reveal on scroll
-        Object.entries(sectionRefs.current).forEach(([id, element]) => {
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
-            if (isVisible) {
-              setVisibleSections(prev => new Set([...prev, id]));
-            }
-          }
-        });
-
-        rafId = null;
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Helper function to get depth class
-  const getDepthClass = (scrollY, scrollHeight) => {
-    if (scrollHeight <= 0) return 'depth-surface';
-    const depthPercent = (scrollY / scrollHeight) * 100;
-    if (depthPercent < 25) return 'depth-surface';
-    if (depthPercent < 50) return 'depth-mid';
-    if (depthPercent < 75) return 'depth-deep';
-    return 'depth-abyss';
-  };
-
-  // Back to top handler
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Toggle project expansion
-  const toggleProject = (projectName) => {
-    setExpandedProject(expandedProject === projectName ? null : projectName);
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (isLoading) {
     return (
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center">
-        {/* Loading animation background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-          <Bubble size="40px" delay="0" duration="6" left="10%" bottom="20%" />
-          <Bubble size="60px" delay="1" duration="8" left="80%" bottom="40%" />
-          <Bubble size="30px" delay="2" duration="7" left="20%" bottom="60%" />
-          <Bubble size="50px" delay="3" duration="9" left="70%" bottom="15%" />
-          <Bubble size="35px" delay="0.5" duration="7.5" left="50%" bottom="50%" />
-        </div>
-
-        {/* Loading content */}
-        <div className="relative z-10 text-center">
-          <div className="mb-8 flex justify-center">
-            <div className="relative w-20 h-20">
-              {/* Rotating circle */}
-              <div className="absolute inset-0 rounded-full border-4 border-cyan-500 border-opacity-20"></div>
-              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-cyan-400 border-r-cyan-400 animate-spin"></div>
-              
-              {/* Center fish icon */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Fish className="w-8 h-8 text-cyan-400 animate-pulse" />
-              </div>
-            </div>
-          </div>
-          
-          <h2 className="text-2xl font-semibold text-cyan-200 mb-2">Loading Portfolio</h2>
-          <p className="text-cyan-200 text-opacity-60">Please wait...</p>
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center font-mono">
+        <Cpu className="w-16 h-16 text-orange-500 animate-pulse mb-4" />
+        <div className="text-orange-500 text-xl tracking-widest">INITIALIZING...</div>
+        <div className="mt-2 w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
+          <div className="h-full bg-orange-500 animate-[width_2s_ease-out_forwards]" style={{ width: '100%' }}></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`relative min-h-screen overflow-hidden ocean-animated ${depthClass}`}>
-      {/* Scroll Progress Indicator */}
-      <div id="scroll-progress" className="scroll-progress" style={{ transform: 'scaleX(0)' }} />
+    <div className="relative min-h-screen text-slate-300 overflow-x-hidden font-sans">
+      {/* Global Grid Background */}
+      <div className="schematic-grid" style={{ transform: `translateY(${scrollY * 0.1}px)` }}></div>
+      
+      <Taskbar sectionRefs={sectionRefs.current} />
 
-      {/* Back to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className={`back-to-top ${showBackToTop ? 'visible' : ''}`}
-        aria-label="Back to top"
-      >
-        <ArrowUp className="w-6 h-6" />
+      <div id="scroll-progress" className="scroll-progress transform scale-x-0 origin-left" />
+
+      <button onClick={scrollToTop} className={`back-to-top ${showBackToTop ? 'visible' : ''}`}>
+        <ArrowUp className="w-5 h-5" />
       </button>
 
-      {/* Subtle Light Rays Effect - Reduced */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="light-ray" style={{ left: '20%', animationDelay: '0s' }} />
-        <div className="light-ray" style={{ left: '50%', animationDelay: '4s' }} />
-        <div className="light-ray" style={{ left: '80%', animationDelay: '8s' }} />
-      </div>
-
-      {/* Subtle Particle Effects - Reduced */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left: `${15 + (i * 15)}%`,
-              top: `${20 + (i * 12)}%`,
-              animationDelay: `${i * 2.5}s`,
-              animationDuration: `${18 + (i * 2)}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Subtle Wave at the top - More refined */}
-      <div className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-5 opacity-40">
-        <svg className="w-full h-full animate-tsunami" viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,50 Q300,10 600,50 T1200,50 L1200,100 L0,100 Z" fill="url(#waveGradient)" />
-          <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#0e7490" stopOpacity="0.15" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      {/* Simplified Animated background elements - Subtle and elegant */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Minimal floating bubbles - Only 3 subtle ones */}
-        <Bubble size="60px" delay="0" duration="12" left="15%" bottom="25%" />
-        <Bubble size="80px" delay="4" duration="15" left="70%" bottom="45%" />
-        <Bubble size="50px" delay="8" duration="18" left="45%" bottom="65%" />
-
-        {/* Minimal seaweed - Only at very bottom, subtle */}
-        <Seaweed className="absolute bottom-0 left-1/4 w-20 h-48 text-teal-600 opacity-15 animate-seaweed-wave" style={{animationDelay: '1s'}} />
-        <Seaweed className="absolute bottom-0 left-1/2 w-24 h-56 text-teal-600 opacity-18 animate-seaweed-wave" style={{animationDelay: '0.5s', transform: 'translateX(-50%)'}} />
-        <Seaweed className="absolute bottom-0 right-1/4 w-20 h-52 text-teal-600 opacity-15 animate-seaweed-wave" style={{animationDelay: '1.5s'}} />
-      </div>
-
-      {/* Main content - z-10 */}
-      <div className="relative z-10">
-        {/* Header */}
-        <header 
-          ref={el => sectionRefs.current['header'] = el}
-          className={`section-reveal ${visibleSections.has('header') ? 'visible' : ''} backdrop-blur-xl bg-slate-900 bg-opacity-70 border-b border-cyan-500 border-opacity-20`}
-        >
-          <div className="max-w-7xl mx-auto px-6 py-20 md:py-24">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-6">
-              <div className="text-3xl text-cyan-400 icon-hover">
-                <Waves className="w-14 h-14 md:w-16 md:h-16" />
-              </div>
-              <div className="flex-1">
-                <h1 className="text-glow text-cyan-50 mb-2">
-                  {portfolioData.header.name}
-                </h1>
-                <p className="text-xl md:text-2xl font-semibold text-cyan-300">
-                  {portfolioData.header.title}
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 w-full md:w-auto">
-                <div className="px-4 py-2 rounded-full bg-cyan-500 bg-opacity-15 border border-cyan-500 border-opacity-30 text-sm font-medium text-cyan-200 hover:bg-opacity-25 hover:border-opacity-40 smooth-transition">
-                  UTA Freshman
-                </div>
-                <div className="px-4 py-2 rounded-full bg-teal-500 bg-opacity-15 border border-teal-500 border-opacity-30 text-sm font-medium text-teal-200 hover:bg-opacity-25 hover:border-opacity-40 smooth-transition">
-                  Research
-                </div>
-              </div>
+      <main className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-32">
+        
+        {/* HEADER Section */}
+        <header ref={el => sectionRefs.current['header'] = el} className="min-h-[80vh] flex flex-col justify-center mb-24 relative">
+          <CircuitTrace className="top-20 left-10 w-64 h-32 opacity-20" />
+          
+          <div className="terminal-window max-w-3xl w-full mx-auto section-reveal visible">
+            <div className="terminal-header">
+              <div className="terminal-dot dot-red"></div>
+              <div className="terminal-dot dot-yellow"></div>
+              <div className="terminal-dot dot-green"></div>
+              <span className="ml-4 text-xs text-slate-400">user@portfolio:~</span>
             </div>
-            <div className="flex flex-wrap gap-4 text-sm md:text-base">
-              <span className="text-cyan-200 text-opacity-80">Based in Texas</span>
-              <span className="text-teal-200 text-opacity-80">Passionate about Innovation</span>
+            <div className="p-8 md:p-12">
+              <h1 className="text-4xl md:text-6xl font-bold text-slate-100 mb-4 hover-glitch">
+                {portfolioData.header.name}
+              </h1>
+              <h2 className="text-xl md:text-2xl text-orange-500 font-mono mb-8">
+                &lt;{portfolioData.header.title} /&gt;
+              </h2>
+              
+              <div className="font-mono text-sm md:text-base text-slate-400 leading-relaxed border-l-2 border-slate-700 pl-4 mb-8">
+                 <span className="text-blue-400">const</span> bio = <span className="text-green-400">"</span>
+                 <TypingEffect text={portfolioData.header.bio} speed={30} />
+                 <span className="text-green-400">"</span>;
+              </div>
+              
+              {/* Debug: Show raw text */}
+              <div className="text-xs text-slate-600 mt-4 hidden">Raw: {portfolioData.header.bio}</div>
+
+              <div className="flex flex-wrap gap-4">
+                <div className="px-4 py-2 border border-orange-500/30 bg-orange-500/10 text-orange-400 font-mono text-sm">
+                  :: UTA Freshman
+                </div>
+                <div className="px-4 py-2 border border-blue-500/30 bg-blue-500/10 text-blue-400 font-mono text-sm">
+                  :: Research Assistant
+                </div>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
+        <PCBDivider />
 
-        {/* Bio Section */}
-        <section 
-          ref={el => sectionRefs.current['bio'] = el}
-          className={`section-reveal ${visibleSections.has('bio') ? 'visible' : ''} backdrop-blur-xl bg-slate-900 bg-opacity-50 border-b border-cyan-500 border-opacity-15`}
-        >
-          <div className="max-w-7xl mx-auto px-6 py-20 md:py-24">
-            <div className="flex flex-col md:flex-row items-start gap-6">
-              <Waves className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0 text-cyan-400 icon-hover" />
-              <div className="flex-1">
-                <p className="text-lg md:text-xl leading-relaxed text-cyan-100 text-opacity-90 mb-8">
-                  {portfolioData.header.bio}
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-                  <div className="card-enhanced p-5 md:p-6 hover-lift">
-                    <div className="text-base font-semibold text-cyan-300 mb-2">Hobbies</div>
-                    <div className="text-sm text-cyan-200 text-opacity-80">Card Games and Working Out</div>
-                  </div>
-                  <div className="card-enhanced p-5 md:p-6 hover-lift">
-                    <div className="text-base font-semibold text-teal-300 mb-2">Focus</div>
-                    <div className="text-sm text-teal-200 text-opacity-80">Photonics & Electronics</div>
-                  </div>
-                  <div className="card-enhanced p-5 md:p-6 hover-lift">
-                    <div className="text-base font-semibold text-cyan-300 mb-2">Interest</div>
-                    <div className="text-sm text-cyan-200 text-opacity-80">Competitive Programming and Math</div>
-                  </div>
+        {/* ABOUT Section */}
+        <section ref={el => sectionRefs.current['about'] = el} className={`section-reveal ${visibleSections.has('about') ? 'visible' : ''} mb-32`}>
+          <div className="flex items-center gap-4 mb-8">
+             <Terminal className="w-8 h-8 text-orange-500" />
+             <h2 className="text-3xl font-bold text-slate-100">SYSTEM_OVERVIEW</h2>
+          </div>
+          
+          <div className="card-schematic p-8 md:p-12">
+             <p className="text-lg leading-relaxed font-mono text-slate-300">
+               {portfolioData.about.content}
+             </p>
+          </div>
+        </section>
+
+        {/* INFO GRID (Hobbies/Focus/Interest) */}
+        <section ref={el => sectionRefs.current['bio'] = el} className={`section-reveal ${visibleSections.has('bio') ? 'visible' : ''} mb-32`}>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="card-schematic p-6 hover:border-blue-500 group">
+              <div className="text-xs font-mono text-slate-500 mb-2">MODULE: 01</div>
+              <h3 className="text-xl text-blue-400 font-mono mb-2 group-hover:text-blue-300">Hobbies</h3>
+              <p className="text-sm text-slate-400 font-mono">Card Games & Working Out</p>
+            </div>
+            <div className="card-schematic p-6 hover:border-orange-500 group">
+              <div className="text-xs font-mono text-slate-500 mb-2">MODULE: 02</div>
+              <h3 className="text-xl text-orange-500 font-mono mb-2 group-hover:text-orange-300">Focus</h3>
+              <p className="text-sm text-slate-400 font-mono">Photonics & Electronics</p>
+            </div>
+            <div className="card-schematic p-6 hover:border-green-500 group">
+              <div className="text-xs font-mono text-slate-500 mb-2">MODULE: 03</div>
+              <h3 className="text-xl text-green-500 font-mono mb-2 group-hover:text-green-300">Interest</h3>
+              <p className="text-sm text-slate-400 font-mono">Competitive Programming</p>
+            </div>
+          </div>
+        </section>
+
+        <PCBDivider />
+
+        {/* EDUCATION Section */}
+        <section ref={el => sectionRefs.current['education'] = el} className={`section-reveal ${visibleSections.has('education') ? 'visible' : ''} mb-32`}>
+          <div className="flex items-center gap-4 mb-8">
+             <div className="w-8 h-8 border border-orange-500 flex items-center justify-center">
+               <span className="text-orange-500 font-mono font-bold">E</span>
+             </div>
+            <h2 className="text-3xl font-bold text-slate-100">EDUCATION_LOG</h2>
+          </div>
+
+          <div className="space-y-6">
+            {portfolioData.education.map((edu, idx) => (
+              <div key={idx} className="card-schematic p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Cpu size={100} />
+                </div>
+                <h3 className="text-2xl text-slate-100 font-bold mb-2">{edu.degree}</h3>
+                <div className="flex flex-wrap items-center gap-4 text-sm font-mono text-slate-400">
+                  <span className="text-orange-500">{edu.school}</span>
+                  <span>|</span>
+                  <span>Class of {edu.year}</span>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
+        {/* EXPERIENCE Section */}
+        <section ref={el => sectionRefs.current['experience'] = el} className={`section-reveal ${visibleSections.has('experience') ? 'visible' : ''} mb-32`}>
+           <div className="flex items-center gap-4 mb-8">
+             <BriefcaseIcon />
+             <h2 className="text-3xl font-bold text-slate-100">WORK_HISTORY</h2>
+           </div>
 
-        {/* About Section */}
-        <section 
-          ref={el => sectionRefs.current['about'] = el}
-          className={`section-reveal ${visibleSections.has('about') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="card-enhanced p-10 md:p-12">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-8 text-center">About</h2>
-            <p className="text-base md:text-lg leading-relaxed text-cyan-100 text-opacity-90">
-              {portfolioData.about.content}
-            </p>
-          </div>
+           <div className="border-l-2 border-slate-800 ml-4 space-y-12">
+             {portfolioData.experience.map((exp, idx) => (
+               <div key={idx} className="relative pl-8">
+                 <div className="absolute -left-[9px] top-0 w-4 h-4 bg-slate-900 border-2 border-orange-500 rounded-full"></div>
+                 
+                 <div className="card-schematic p-8">
+                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+                     <h3 className="text-xl font-bold text-slate-100">{exp.role}</h3>
+                     <span className="font-mono text-xs px-2 py-1 bg-slate-800 text-orange-400 rounded">
+                       {exp.date}
+                     </span>
+                   </div>
+                   <div className="text-blue-400 font-mono text-sm mb-4">{exp.company}</div>
+                   <p className="text-slate-400 leading-relaxed font-mono text-sm">
+                     {exp.description}
+                   </p>
+                 </div>
+               </div>
+             ))}
+           </div>
         </section>
 
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
+        <PCBDivider />
 
-        {/* Education Section */}
-        <section 
-          ref={el => sectionRefs.current['education'] = el}
-          className={`section-reveal ${visibleSections.has('education') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="card-enhanced p-10 md:p-12">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-10 text-center">Education</h2>
-            <div className="space-y-6 md:space-y-8">
-              {portfolioData.education.map((edu, index) => (
-                <div key={index} className="card-enhanced p-6 md:p-7 hover-lift relative">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-teal-500 rounded-l-lg" />
-                  <h3 className="font-semibold text-xl md:text-2xl mb-2 text-cyan-50">
-                    {edu.degree}
-                  </h3>
-                  <p className="text-base md:text-lg text-cyan-200 text-opacity-80">
-                    {edu.school} • {edu.year}
-                  </p>
+        {/* SKILLS Section */}
+        <section ref={el => sectionRefs.current['skills'] = el} className={`section-reveal ${visibleSections.has('skills') ? 'visible' : ''} mb-32`}>
+          <div className="flex items-center gap-4 mb-8">
+            <Zap className="w-8 h-8 text-yellow-500" />
+            <h2 className="text-3xl font-bold text-slate-100">TECHNICAL_COMPETENCIES</h2>
+          </div>
+          
+          <div className="card-schematic p-10">
+            <div className="flex flex-wrap gap-4 justify-center">
+              {portfolioData.skills.map((skill, idx) => (
+                <div key={idx} className="skill-badge px-6 py-3 text-sm font-medium tracking-wide">
+                  {skill.toUpperCase()}
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
-
-        {/* Experience Section */}
-        <section 
-          ref={el => sectionRefs.current['experience'] = el}
-          className={`section-reveal ${visibleSections.has('experience') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="card-enhanced p-10 md:p-12">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-10 text-center">Experience</h2>
-            <div className="space-y-6 md:space-y-8">
-              {portfolioData.experience.map((exp, index) => (
-                <div key={index} className="card-enhanced p-7 md:p-8 border-l-4 border-l-cyan-400 hover-lift relative">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold text-xl md:text-2xl mb-2 text-cyan-50">
-                        {exp.role}
-                      </h3>
-                      <p className="text-base md:text-lg font-medium text-cyan-200 text-opacity-80">
-                        {exp.company} • {exp.date}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-base md:text-lg leading-relaxed text-cyan-100 text-opacity-90">
-                    {exp.description}
-                  </p>
-                </div>
-              ))}
+            
+            <div className="mt-8 pt-8 border-t border-slate-700/50 flex justify-between text-xs font-mono text-slate-500">
+              <span>MEMORY_USAGE: 45%</span>
+              <span>CPU_LOAD: 12%</span>
+              <span>UPTIME: 99.9%</span>
             </div>
           </div>
         </section>
 
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
-
-        {/* Skills Section */}
-        <section 
-          ref={el => sectionRefs.current['skills'] = el}
-          className={`section-reveal ${visibleSections.has('skills') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="card-enhanced p-10 md:p-12">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-10 text-center">Skills</h2>
-            <div className="flex flex-wrap gap-3 md:gap-4 justify-center">
-              {portfolioData.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="skill-badge px-5 md:px-6 py-3 md:py-4 rounded-full text-sm md:text-base font-medium backdrop-blur-sm bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:from-cyan-400 hover:to-teal-400"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
+        {/* PROJECTS Section */}
+        <section ref={el => sectionRefs.current['projects'] = el} className={`section-reveal ${visibleSections.has('projects') ? 'visible' : ''} mb-32`}>
+          <div className="flex items-center gap-4 mb-8">
+            <Grid className="w-8 h-8 text-blue-500" />
+            <h2 className="text-3xl font-bold text-slate-100">PROJECT_MANIFEST</h2>
           </div>
-        </section>
 
-        {/* Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.1)" />
-          </svg>
-        </div>
-
-        {/* Projects Section */}
-        <section 
-          ref={el => sectionRefs.current['projects'] = el}
-          className={`section-reveal ${visibleSections.has('projects') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="mb-12 text-center">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-4">Projects</h2>
-            <p className="text-cyan-200 text-opacity-70 text-lg md:text-xl">
-              Explore my work and contributions
-            </p>
-          </div>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {portfolioData.projects.map((project, index) => (
               <ProjectCard
                 key={index}
                 project={project}
                 isExpanded={expandedProject === project.name}
-                onToggle={() => toggleProject(project.name)}
+                onToggle={() => setExpandedProject(expandedProject === project.name ? null : project.name)}
               />
             ))}
           </div>
         </section>
 
-        {/* Subtle Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.06)" />
-          </svg>
-        </div>
+        <PCBDivider />
 
-        {/* Contact Section */}
-        <section 
-          ref={el => sectionRefs.current['contact'] = el}
-          className={`section-reveal ${visibleSections.has('contact') ? 'visible' : ''} max-w-7xl mx-auto px-6 py-20 md:py-24`}
-        >
-          <div className="card-enhanced p-10 md:p-12">
-            <h2 className="text-4xl md:text-5xl font-semibold text-cyan-50 mb-10 text-center">Contact</h2>
-            <div className="space-y-4 md:space-y-5">
-              {/* Email */}
-              <a
-                href={`mailto:${portfolioData.contact.email}`}
-                className="ripple-effect card-enhanced flex items-center gap-4 md:gap-6 p-5 md:p-6 bg-cyan-500 bg-opacity-10 hover:bg-opacity-20 text-cyan-100 border border-cyan-500 border-opacity-30 hover-lift group"
-                aria-label={`Send email to ${portfolioData.contact.email}`}
-              >
-                <Mail className="w-7 h-7 md:w-8 md:h-8 flex-shrink-0 text-cyan-400 icon-hover group-hover:text-cyan-300" />
-                <span className="font-semibold text-base md:text-lg flex-1">{portfolioData.contact.email}</span>
-                <ExternalLink className="w-5 h-5 text-cyan-400 opacity-0 group-hover:opacity-100 smooth-transition" />
+        {/* CONTACT Section */}
+        <section ref={el => sectionRefs.current['contact'] = el} className={`section-reveal ${visibleSections.has('contact') ? 'visible' : ''} mb-20`}>
+          <div className="card-schematic p-10 md:p-14 text-center">
+            <h2 className="text-4xl font-bold text-slate-100 mb-8">INITIATE_COMMUNICATION</h2>
+            
+            <div className="flex flex-col md:flex-row gap-6 justify-center">
+              <a href={`mailto:${portfolioData.contact.email}`} className="group card-schematic p-6 flex flex-col items-center gap-3 hover:border-orange-500 min-w-[200px]">
+                <Mail className="w-8 h-8 text-slate-400 group-hover:text-orange-500 transition-colors" />
+                <span className="font-mono text-xs text-slate-500">EMAIL_PROTOCOL</span>
+                <span className="text-sm text-slate-300">Send Message</span>
               </a>
-
-              {/* GitHub */}
-              <a
-                href={portfolioData.contact.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ripple-effect card-enhanced flex items-center gap-4 md:gap-6 p-5 md:p-6 bg-cyan-500 bg-opacity-10 hover:bg-opacity-20 text-cyan-100 border border-cyan-500 border-opacity-30 hover-lift group"
-                aria-label="Visit GitHub profile"
-              >
-                <Github className="w-7 h-7 md:w-8 md:h-8 flex-shrink-0 text-cyan-400 icon-hover group-hover:text-cyan-300" />
-                <span className="font-semibold text-base md:text-lg flex-1">GitHub</span>
-                <ExternalLink className="w-5 h-5 text-cyan-400 opacity-0 group-hover:opacity-100 smooth-transition" />
+              
+              <a href={portfolioData.contact.github} target="_blank" className="group card-schematic p-6 flex flex-col items-center gap-3 hover:border-blue-500 min-w-[200px]">
+                <Github className="w-8 h-8 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                <span className="font-mono text-xs text-slate-500">GIT_REPO</span>
+                <span className="text-sm text-slate-300">View Source</span>
               </a>
-
-              {/* LinkedIn */}
-              <a
-                href={portfolioData.contact.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ripple-effect card-enhanced flex items-center gap-4 md:gap-6 p-5 md:p-6 bg-cyan-500 bg-opacity-10 hover:bg-opacity-20 text-cyan-100 border border-cyan-500 border-opacity-30 hover-lift group"
-                aria-label="Visit LinkedIn profile"
-              >
-                <Linkedin className="w-7 h-7 md:w-8 md:h-8 flex-shrink-0 text-cyan-400 icon-hover group-hover:text-cyan-300" />
-                <span className="font-semibold text-base md:text-lg flex-1">LinkedIn</span>
-                <ExternalLink className="w-5 h-5 text-cyan-400 opacity-0 group-hover:opacity-100 smooth-transition" />
+              
+              <a href={portfolioData.contact.linkedin} target="_blank" className="group card-schematic p-6 flex flex-col items-center gap-3 hover:border-blue-500 min-w-[200px]">
+                <Linkedin className="w-8 h-8 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                <span className="font-mono text-xs text-slate-500">LINKEDIN</span>
+                <span className="text-sm text-slate-300">Connect</span>
               </a>
             </div>
           </div>
         </section>
 
-        {/* Wave Divider */}
-        <div className="wave-divider">
-          <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,30 Q300,10 600,30 T1200,30 L1200,60 L0,60 Z" fill="rgba(6, 182, 212, 0.1)" />
-          </svg>
-        </div>
-
-        {/* Footer */}
-        <footer className="py-12 md:py-16 mt-24 md:mt-32 border-t border-cyan-500 border-opacity-15">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <p className="text-sm md:text-base text-cyan-200 text-opacity-60">
-              © 2026 {portfolioData.header.name}
-            </p>
-          </div>
+        {/* FOOTER */}
+        <footer className="text-center font-mono text-xs text-slate-600 pb-8">
+           <div className="mb-2">SYSTEM STATUS: NOMINAL</div>
+           <div>&copy; 2026 {portfolioData.header.name} | BUILD: v2.1.0</div>
         </footer>
-      </div>
+
+      </main>
     </div>
   );
 }
